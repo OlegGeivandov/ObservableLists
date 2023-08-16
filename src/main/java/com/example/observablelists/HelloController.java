@@ -47,36 +47,38 @@ public class HelloController {
     }
 
     public void initialize(){
-        cars2.addListener(new ListChangeListener<PrimitiveCar>() {
-            @Override
-            public void onChanged(Change<? extends PrimitiveCar> change) {
-                while (change.next())
-                {
-                    if(change.wasAdded())
-                    {
-                        System.out.println("что-то добавилось в список");
-                        for(PrimitiveCar pc: change.getAddedSubList()) {
-                            Label lab = new Label(pc.toString());
-                            Button but = new Button("-");
-                            but.setOnAction(q->cars2.remove(pc));
-                            HBox hBox=new HBox();
-                            hBox.getChildren().add(but);
-                            hBox.getChildren().add(lab);
-                            boxForCars.getChildren().add(hBox);
-                            hBoxMap.put(pc, hBox);
-                        }
+        cars2.addListener((ListChangeListener<PrimitiveCar>) change -> {
+            while (change.next())  {
+                if(change.wasAdded()){
+                    System.out.println("что-то добавилось в список");
+                    for(PrimitiveCar pc: change.getAddedSubList()) {
+                        paintCar(pc);
                     }
-                    if(change.wasRemoved())
-                    {
-                        System.out.println("что-то удалилось из списка");
-                        for(PrimitiveCar pc: change.getRemoved()) {
-                            System.out.println("удалилась машинка "+pc);
-                            boxForCars.getChildren().remove(hBoxMap.get(pc));
-                            hBoxMap.remove(pc);
-                        }
+                }
+                if(change.wasRemoved())  {
+                    System.out.println("что-то удалилось из списка");
+                    for(PrimitiveCar pc: change.getRemoved()) {
+                        eraseCar(pc);
                     }
                 }
             }
         });
+    }
+
+    private void eraseCar(PrimitiveCar pc) {
+        System.out.println("удалилась машинка "+ pc);
+        boxForCars.getChildren().remove(hBoxMap.get(pc));
+        hBoxMap.remove(pc);
+    }
+
+    private void paintCar(PrimitiveCar pc) {
+        Label lab = new Label(pc.toString());
+        Button but = new Button("-");
+        but.setOnAction(q->cars2.remove(pc));
+        HBox hBox=new HBox();
+        hBox.getChildren().add(but);
+        hBox.getChildren().add(lab);
+        boxForCars.getChildren().add(hBox);
+        hBoxMap.put(pc, hBox);
     }
 }
