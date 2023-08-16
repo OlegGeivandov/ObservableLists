@@ -58,4 +58,9 @@ public class ObservableCar {
     public void setGruz(int gruz) {
         this.gruz.set(gruz);
     }
+
+    public void bibi()
+    {
+        System.out.println(this.toString()+": Би-би");
+    }
 }

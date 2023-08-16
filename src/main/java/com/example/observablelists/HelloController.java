@@ -106,6 +106,14 @@ public class HelloController {
         table1.getColumns().add(act);
         table1.setItems(cars3);
         table1.setEditable(true);
+
+        TableColumn<ObservableCar, Button> bibi = new TableColumn<>("би");
+       // bibi.setCellValueFactory(new PropertyValueFactory<>("name"));
+        bibi.setCellFactory(ActionButtonTableCell.<ObservableCar>forTableColumn("бииии",(ObservableCar car)-> {
+            car.bibi();
+            return car;
+        }));
+        table1.getColumns().add(bibi);
     }
 
    /* private void eraseCar(PrimitiveCar pc) {
