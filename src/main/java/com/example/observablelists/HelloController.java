@@ -4,11 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class HelloController {
     TextField txtSpeed, txtName, txtGruz;
     @FXML
     VBox boxForCars;
+
+    @FXML
+    TableView<ObservableCar> table1;
 
     @FXML
     public void addCar(){
@@ -72,6 +76,36 @@ public class HelloController {
                 }
             }
         });
+
+        initTable();
+    }
+
+    public void initTable()
+    {
+        table1.getColumns().clear();
+        TableColumn<ObservableCar, String> columnName = new TableColumn<>("Модель");
+        columnName.setCellValueFactory(new PropertyValueFactory<ObservableCar, String>("name"));
+        columnName.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        TableColumn<ObservableCar, Integer> columnSpeed = new TableColumn<>("Макс скорость");
+        columnSpeed.setCellValueFactory(new PropertyValueFactory<>("speed"));
+        columnSpeed.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        TableColumn<ObservableCar, Integer> columnGruz = new TableColumn<>("Грузоподъемность");
+        columnGruz.setCellValueFactory(new PropertyValueFactory<>("gruz"));
+
+        TableColumn<ObservableCar, Button> act = new TableColumn<>("...");
+        act.setCellFactory(ActionButtonTableCell.<ObservableCar>forTableColumn("Убрать", (ObservableCar p) -> {
+            table1.getItems().remove(p);
+            return p;
+        }));
+
+        table1.getColumns().add(columnName);
+        table1.getColumns().add(columnSpeed);
+        table1.getColumns().add(columnGruz);
+        table1.getColumns().add(act);
+        table1.setItems(cars3);
+        table1.setEditable(true);
     }
 
    /* private void eraseCar(PrimitiveCar pc) {

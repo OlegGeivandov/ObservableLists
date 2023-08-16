@@ -34,4 +34,28 @@ public class ObservableCar {
                 ", gruz=" + gruz.get() +
                 '}';
     }
+
+    public String getName() {
+        return name.get();
+    }
+
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public int getGruz() {
+        return gruz.get();
+    }
+
+    public SimpleIntegerProperty gruzProperty() {
+        return gruz;
+    }
+
+    public void setGruz(int gruz) {
+        this.gruz.set(gruz);
+    }
 }
